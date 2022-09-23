@@ -20,62 +20,59 @@ endpoints:
           password: ${PASSWORD}
         vars:
           token: ${{response.json()["key"]}}
-      - name: create_snippet
-        path: /snippets/
-        method: post
+    endpoints:
+      - name: snippets
+        path: /snippets
         headers:
           Authorization: Token ${token}
-        body:
-          title: Hello World
-          code: "print('hello world')"
-          style: "xcode"
-          language: "python"
-        vars:
-          snippet_id: ${{response.json()["id"]}}
-        tests:
-          - name: status_code_is_201
-            assert: ${{ response.status_code == 201 }}
-      - name: snippet_details
-        path: /snippets/${snippet_id}/
-        method: get
-        tests:
-          - name: status_code_is_200
-            assert: ${{ response.status_code == 200 }}
-
-      - name: snippet_update_with_patch
-        path: /snippets/${snippet_id}/
-        method: patch
-        headers:
-          Authorization: Token ${token}
-        body:
-          code: "print('hello, patch')"
-        tests:
-          - name: status_code_is_200
-            assert: ${{ response.status_code == 200 }}
-      - name: snippet_update_with_put
-        path: /snippets/${snippet_id}/
-        method: put
-        headers:
-          Authorization: Token ${token}
-        body:
-          title: Hello World - Ruby
-          code: "puts 'hello world'"
-          style: "emacs"
-          language: "ruby"
-        tests:
-          - name: status_code_is_200
-            assert: ${{ response.status_code == 200 }}
-      - name: delete_snippet
-        path: snippets/${snippet_id}/
-        method: delete
-        headers:
-          Authorization: Token ${token}
-        tests:
-          - name: status_code_is_204
-            assert: ${{ response.status_code == 204 }}
-      - name: snippets_list_all
-        path: /snippets/
-        method: get
-        tests:
-          - name: status_code_is_200
-            assert: ${{ response.status_code == 200 }}
+        requests:
+          - name: create
+            path: /
+            method: post
+            body:
+              title: Hello World
+              code: "print('hello world')"
+              style: "xcode"
+              language: "python"
+            vars:
+              snippet_id: ${{response.json()["id"]}}
+            tests:
+              - name: status_code_is_201
+                assert: ${{ response.status_code == 201 }}
+          - name: details
+            path: /${snippet_id}/
+            method: get
+            tests:
+              - name: status_code_is_200
+                assert: ${{ response.status_code == 200 }}
+          - name: update_with_patch
+            path: /${snippet_id}/
+            method: patch
+            body:
+              code: "print('hello, patch')"
+            tests:
+              - name: status_code_is_200
+                assert: ${{ response.status_code == 200 }}
+          - name: update_with_put
+            path: /${snippet_id}/
+            method: put
+            body:
+              title: Hello World - Ruby
+              code: "puts 'hello world'"
+              style: "emacs"
+              language: "ruby"
+            tests:
+              - name: status_code_is_200
+                assert: ${{ response.status_code == 200 }}
+          - name: delete
+            path: /${snippet_id}/
+            method: delete
+            tests:
+              - name: status_code_is_204
+                assert: ${{ response.status_code == 204 }}
+          - name: list_all
+            path: /
+            method: get
+            tests:
+              - name: status_code_is_200
+                assert: ${{ response.status_code == 200 }}
