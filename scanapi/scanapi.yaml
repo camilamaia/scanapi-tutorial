@@ -11,4 +11,10 @@ endpoints:
           - name: status_code_is_200
             assert: ${{ response.status_code == 200 }}
           - name: body_equals_ok
-            assert: ${{ response.json() == "OK!" }} 
+            assert: ${{ response.json() == "OK!" }}
+      - name: get_token
+        path: /rest-auth/login/
+        method: post
+        body:
+          username: ${USER}
+          password: ${PASSWORD}
