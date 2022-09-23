@@ -1,0 +1,9 @@
+endpoints:
+  - name: snippets-api
+    path: http://demo.scanapi.dev/api/v1/
+    headers:
+      Content-Type: application/json
+    requests:
+      - name: health
+        method: get
+        path: /health/
