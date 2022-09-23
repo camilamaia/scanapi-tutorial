@@ -7,3 +7,8 @@ endpoints:
       - name: health
         method: get
         path: /health/
+        tests:
+          - name: status_code_is_200
+            assert: ${{ response.status_code == 200 }}
+          - name: body_equals_ok
+            assert: ${{ response.json() == "OK!" }} 
